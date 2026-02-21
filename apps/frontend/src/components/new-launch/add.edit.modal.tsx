@@ -118,6 +118,7 @@ export const AddEditModalInnerInner: FC<AddEditModalProps> = (props) => {
     setTags,
     setEditor,
     setRepeater,
+    setIsEvergreen,
   } = useLaunchStore(
     useShallow((state) => ({
       reset: state.reset,
@@ -129,6 +130,7 @@ export const AddEditModalInnerInner: FC<AddEditModalProps> = (props) => {
       setTags: state.setTags,
       setEditor: state.setEditor,
       setRepeater: state.setRepeater,
+      setIsEvergreen: state.setIsEvergreen,
     }))
   );
 
@@ -136,6 +138,9 @@ export const AddEditModalInnerInner: FC<AddEditModalProps> = (props) => {
     if (existingData.integration) {
       if (existingData?.posts?.[0]?.intervalInDays) {
         setRepeater(existingData.posts[0].intervalInDays);
+      }
+      if (existingData?.posts?.[0]?.isEvergreen) {
+        setIsEvergreen(true);
       }
       setTags(
         // @ts-ignore

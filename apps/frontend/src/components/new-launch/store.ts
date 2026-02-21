@@ -32,6 +32,7 @@ interface StoreState {
   postComment: PostComment;
   dummy: boolean;
   repeater?: number;
+  isEvergreen: boolean;
   isCreateSet: boolean;
   totalChars: number;
   activateExitButton: boolean;
@@ -113,6 +114,7 @@ interface StoreState {
   setHide: (hide: boolean) => void;
   setDate: (date: dayjs.Dayjs) => void;
   setRepeater: (repeater: number) => void;
+  setIsEvergreen: (isEvergreen: boolean) => void;
   setTags: (tags: { label: string; value: string }[]) => void;
   setIsCreateSet: (isCreateSet: boolean) => void;
   setTotalChars?: (totalChars: number) => void;
@@ -147,6 +149,7 @@ const initialState = {
   totalChars: 0,
   tab: 0 as 0,
   isCreateSet: false,
+  isEvergreen: false,
   current: 'global',
   locked: false,
   hide: false,
@@ -536,6 +539,10 @@ export const useLaunchStore = create<StoreState>()((set) => ({
   setRepeater: (repeater: number) =>
     set((state) => ({
       repeater,
+    })),
+  setIsEvergreen: (isEvergreen: boolean) =>
+    set((state) => ({
+      isEvergreen,
     })),
   setTags: (tags: { label: string; value: string }[]) =>
     set((state) => ({

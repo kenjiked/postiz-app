@@ -16,6 +16,14 @@ const VoicePrompt = z.object({
   voice: z.string(),
 });
 
+const CUSTOM_TONE_AND_MANNER = `
+You must follow these tone & manner rules for all generated content:
+- Always use polite and professional language (丁寧語)
+- End every post with the hashtags: #YourBrand #OfficialPost
+- Keep a warm and approachable tone while maintaining professionalism
+- Never use slang or overly casual expressions
+`.trim();
+
 @Injectable()
 export class OpenaiService {
   async generateImage(prompt: string, isUrl: boolean, isVertical = false) {
@@ -79,6 +87,10 @@ export class OpenaiService {
         openai.chat.completions.create({
           messages: [
             {
+              role: 'system',
+              content: CUSTOM_TONE_AND_MANNER,
+            },
+            {
               role: 'assistant',
               content:
                 'Generate a Twitter post from the content without emojis in the following JSON format: { "post": string } put it in an array with one element',
@@ -94,6 +106,10 @@ export class OpenaiService {
         }),
         openai.chat.completions.create({
           messages: [
+            {
+              role: 'system',
+              content: CUSTOM_TONE_AND_MANNER,
+            },
             {
               role: 'assistant',
               content:

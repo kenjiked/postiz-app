@@ -474,7 +474,8 @@ export class PostsRepository {
     date: string,
     body: PostBody,
     tags: { value: string; label: string }[],
-    inter?: number
+    inter?: number,
+    isEvergreen?: boolean
   ) {
     const posts: Post[] = [];
     const uuid = uuidv4();
@@ -507,6 +508,7 @@ export class PostsRepository {
         delay: value.delay || 0,
         group: uuid,
         intervalInDays: inter ? +inter : null,
+        isEvergreen: isEvergreen ?? false,
         approvedSubmitForOrder: APPROVED_SUBMIT_FOR_ORDER.NO,
         ...(state === 'update'
           ? {}
@@ -846,6 +848,96 @@ export class PostsRepository {
         },
       },
     });
+  }
+
+  async getIntegrationsWithNoScheduledPosts(orgId: string, tomorrow: Date, dayAfterTomorrow: Date) {
+    const integrations = await this._post.model.post.groupBy({
+      by: ['integrationId'],
+      where: {
+        organizationId: orgId,
+        deletedAt: null,
+        state: 'QUEUE',
+        publishDate: {
+          gte: tomorrow,
+          lt: dayAfterTomorrow,
+        },
+      },
+    });
+
+    const scheduledIntegrationIds = integrations.map((i) => i.integrationId);
+    return scheduledIntegrationIds;
+  }
+
+  async getOldestEvergreenPost(orgId: string, integrationId: string) {
+    return this._post.model.post.findFirst({
+      where: {
+        organizationId: orgId,
+        integrationId,
+        isEvergreen: true,
+        deletedAt: null,
+        state: 'PUBLISHED',
+        parentPostId: null,
+      },
+      orderBy: {
+        lastPostedAt: { sort: 'asc', nulls: 'first' },
+      },
+      include: {
+        childrenPost: true,
+        integration: true,
+      },
+    });
+  }
+
+  async updateLastPostedAt(postId: string) {
+    return this._post.model.post.update({
+      where: { id: postId },
+      data: { lastPostedAt: new Date() },
+    });
+  }
+
+  async createEvergreenCopy(
+    originalPost: Post & { childrenPost: Post[] },
+    orgId: string,
+    integrationId: string,
+    publishDate: string,
+    groupId: string
+  ) {
+    const newPost = await this._post.model.post.create({
+      data: {
+        publishDate: dayjs(publishDate).toDate(),
+        content: originalPost.content,
+        delay: originalPost.delay,
+        group: groupId,
+        title: originalPost.title,
+        description: originalPost.description,
+        settings: originalPost.settings,
+        image: originalPost.image,
+        state: 'QUEUE',
+        organization: { connect: { id: orgId } },
+        integration: { connect: { id: integrationId } },
+      },
+    });
+
+    for (const child of originalPost.childrenPost) {
+      await this._post.model.post.create({
+        data: {
+          publishDate: dayjs(publishDate).toDate(),
+          content: child.content,
+          delay: child.delay,
+          group: groupId,
+          title: child.title,
+          description: child.description,
+          settings: child.settings,
+          image: child.image,
+          state: 'QUEUE',
+          organization: { connect: { id: orgId } },
+          integration: { connect: { id: integrationId } },
+          parentPost: { connect: { id: newPost.id } },
+        },
+      });
+    }
+
+    return newPost;
   }
 
   async getPostsSince(orgId: string, since: string) {

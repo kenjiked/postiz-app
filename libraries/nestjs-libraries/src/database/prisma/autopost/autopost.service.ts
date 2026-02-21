@@ -222,10 +222,16 @@ export class AutopostService {
         Rules:
         - Maximum 100 chars
         - Try to make it a short as possible to fit any social media
-        - Add line breaks between sentences (\\n) 
+        - Add line breaks between sentences (\\n)
         - Don't add hashtags
         - Add emojis when needed
-        
+
+        IMPORTANT - Custom tone & manner rules (must follow):
+        - Always use polite and professional language
+        - End every post with the hashtags: #YourBrand #OfficialPost
+        - Keep a warm and approachable tone while maintaining professionalism
+        - Never use slang or overly casual expressions
+
         'description':
         {content}
       `

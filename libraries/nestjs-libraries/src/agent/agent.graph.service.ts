@@ -280,13 +280,19 @@ export class AgentGraphService {
         - Try to put some call to action at the end of the post
         - Make sure you add "\n" between the lines
         - Add "\n" after every "."
-        
+
+        IMPORTANT - Custom tone & manner rules (must follow):
+        - Always use polite and professional language
+        - End every post with the hashtags: #YourBrand #OfficialPost
+        - Keep a warm and approachable tone while maintaining professionalism
+        - Never use slang or overly casual expressions
+
         Hook:
         {hook}
-        
+
         User request:
         {request}
-        
+
         current content information:
         {information}
       `

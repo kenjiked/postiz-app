@@ -72,6 +72,8 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
     setDate,
     repeater,
     setRepeater,
+    isEvergreen,
+    setIsEvergreen,
     tags,
     setTags,
     integrations,
@@ -89,6 +91,8 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
       current: state.current,
       repeater: state.repeater,
       setRepeater: state.setRepeater,
+      isEvergreen: state.isEvergreen,
+      setIsEvergreen: state.setIsEvergreen,
       tags: state.tags,
       setTags: state.setTags,
       selectedIntegrations: state.selectedIntegrations,
@@ -369,6 +373,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
       const data = {
         type,
         ...(repeater ? { inter: repeater } : {}),
+        isEvergreen,
         tags,
         shortLink,
         date: date.utc().format('YYYY-MM-DDTHH:mm:ss'),
@@ -439,7 +444,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
         }
       }
     },
-    [ref, repeater, tags, date, addEditSets, dummy, shortlinkPreferenceData]
+    [ref, repeater, isEvergreen, tags, date, addEditSets, dummy, shortlinkPreferenceData]
   );
 
   return (
@@ -564,6 +569,34 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
 
             {!dummy && (
               <RepeatComponent repeat={repeater} onChange={setRepeater} />
+            )}
+
+            {!dummy && (
+              <button
+                onClick={() => setIsEvergreen(!isEvergreen)}
+                className={clsx(
+                  'flex items-center gap-[6px] rounded-[8px] px-[12px] h-[34px] text-[13px] font-[500] border transition-colors',
+                  isEvergreen
+                    ? 'bg-green-600/20 border-green-500 text-green-400'
+                    : 'bg-newBgColor border-newBorder text-textColor hover:border-textColor/50'
+                )}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17 8C17 5.23858 14.7614 3 12 3C9.23858 3 7 5.23858 7 8C7 10 8.5 12 12 14C15.5 12 17 10 17 8Z" />
+                  <path d="M12 14V21" />
+                  <path d="M9 17L12 14L15 17" />
+                </svg>
+                {t('evergreen', 'Evergreen')}
+              </button>
             )}
           </div>
           <div className="pe-[20px] flex items-center justify-end gap-[8px]">

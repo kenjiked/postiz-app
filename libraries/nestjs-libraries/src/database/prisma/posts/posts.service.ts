@@ -703,7 +703,8 @@ export class PostsService {
         body.type === 'now' ? dayjs().format('YYYY-MM-DDTHH:mm:00') : body.date,
         post,
         body.tags,
-        body.inter
+        body.inter,
+        body.isEvergreen
       );
 
       if (!posts?.length) {
@@ -935,5 +936,53 @@ export class PostsService {
     comment: string
   ) {
     return this._postRepository.createComment(orgId, userId, postId, comment);
+  }
+
+  async processEvergreenForOrganization(orgId: string) {
+    const tomorrow = dayjs.utc().add(1, 'day').startOf('day').toDate();
+    const dayAfterTomorrow = dayjs.utc().add(2, 'day').startOf('day').toDate();
+
+    const integrations = await this._integrationService.getIntegrationsList(orgId);
+    const scheduledIntegrationIds =
+      await this._postRepository.getIntegrationsWithNoScheduledPosts(
+        orgId,
+        tomorrow,
+        dayAfterTomorrow
+      );
+
+    const unscheduledIntegrations = integrations.filter(
+      (integration) => !scheduledIntegrationIds.includes(integration.id)
+    );
+
+    for (const integration of unscheduledIntegrations) {
+      const evergreenPost = await this._postRepository.getOldestEvergreenPost(
+        orgId,
+        integration.id
+      );
+
+      if (!evergreenPost) {
+        continue;
+      }
+
+      const freeDateTime = await this.findFreeDateTime(orgId, integration.id);
+
+      const uuid = makeId(10);
+      const newPost = await this._postRepository.createEvergreenCopy(
+        evergreenPost,
+        orgId,
+        integration.id,
+        freeDateTime,
+        uuid
+      );
+
+      await this._postRepository.updateLastPostedAt(evergreenPost.id);
+
+      this.startWorkflow(
+        integration.providerIdentifier.split('-')[0].toLowerCase(),
+        newPost.id,
+        orgId,
+        newPost.state
+      ).catch(() => {});
+    }
   }
 }
