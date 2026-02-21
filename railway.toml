@@ -1,3 +1,10 @@
-[phases.setup]
-    nixPkgs = ['nodejs', 'python3']
-    aptPkgs = ['build-essential', 'libudev-dev']
+[build]
+  builder = "dockerfile"
+  dockerfilePath = "Dockerfile.dev"
+
+[deploy]
+  startCommand = "sh -c 'nginx && pnpm run pm2'"
+  restartPolicyType = "on_failure"
+  restartPolicyMaxRetries = 3
+  healthcheckPath = "/api"
+  healthcheckTimeout = 30
