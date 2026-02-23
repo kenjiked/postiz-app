@@ -41,22 +41,35 @@ export function Login() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     setNotActivated(false);
-    const login = await fetchData('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        ...data,
-        provider: 'LOCAL',
-      }),
-    });
-    if (login.status === 400) {
-      const errorMessage = await login.text();
-      if (errorMessage === 'User is not activated') {
-        setNotActivated(true);
-      } else {
+    try {
+      const login = await fetchData('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          provider: 'LOCAL',
+        }),
+      });
+      if (login.status === 400) {
+        const errorMessage = await login.text();
+        if (errorMessage === 'User is not activated') {
+          setNotActivated(true);
+        } else {
+          form.setError('email', {
+            message: errorMessage,
+          });
+        }
+        setLoading(false);
+      } else if (login.status !== 200) {
         form.setError('email', {
-          message: errorMessage,
+          message: t('login_error', 'An error occurred. Please try again.'),
         });
+        setLoading(false);
       }
+      // For 200, afterRequest handles page reload
+    } catch (e) {
+      form.setError('email', {
+        message: t('connection_error', 'Connection error. Please try again.'),
+      });
       setLoading(false);
     }
   };

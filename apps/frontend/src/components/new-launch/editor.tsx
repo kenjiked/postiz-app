@@ -407,7 +407,7 @@ export const EditorWrapper: FC<{
               )}
             </div>
             <div>
-              <div className="text-white rounded-[8px] h-[44px] px-[20px] bg-[#D82D7E] cursor-pointer flex justify-center items-center">
+              <div className="text-white rounded-[8px] h-[44px] px-[20px] bg-[#0EA5E9] cursor-pointer flex justify-center items-center">
                 {t('edit_content', 'Edit content')}
               </div>
             </div>

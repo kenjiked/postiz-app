@@ -10,7 +10,7 @@ export const LoadingComponent: FC<{
     <div className="flex-1 flex justify-center pt-[100px]">
       <ReactLoading
         type="spin"
-        color="#612bd3"
+        color="#0EA5E9"
         width={props.width || 100}
         height={props.height || 100}
       />

@@ -251,7 +251,7 @@ export const ContinueIntegration: FC<{
       <div className="flex flex-1 items-center justify-center text-white relative overflow-hidden">
         {/* Background gradient decoration */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#612BD3] rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#0EA5E9] rounded-full blur-[120px]" />
           <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-[#FC69FF] rounded-full blur-[120px]" />
         </div>
 
@@ -290,7 +290,7 @@ export const ContinueIntegration: FC<{
       <div className="flex flex-1 items-center justify-center text-white relative overflow-hidden">
         {/* Background gradient decoration */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#612BD3] rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#0EA5E9] rounded-full blur-[120px]" />
           <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-[#FC69FF] rounded-full blur-[120px]" />
         </div>
 
@@ -348,7 +348,7 @@ export const ContinueIntegration: FC<{
       <div className="flex flex-1 items-center justify-center text-white relative overflow-hidden">
         {/* Background gradient decoration */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#612BD3] rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#0EA5E9] rounded-full blur-[120px]" />
           <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-[#FC69FF] rounded-full blur-[120px]" />
         </div>
 
@@ -387,7 +387,7 @@ export const ContinueIntegration: FC<{
     <div className="flex flex-1 items-center justify-center text-white relative overflow-hidden">
       {/* Background gradient decoration */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#612BD3] rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-[#0EA5E9] rounded-full blur-[120px]" />
         <div className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] bg-[#FC69FF] rounded-full blur-[120px]" />
       </div>
 
@@ -400,7 +400,7 @@ export const ContinueIntegration: FC<{
         </div>
         {/* Loading spinner */}
         <div className="mt-[32px] flex justify-center">
-          <div className="w-[48px] h-[48px] border-[3px] border-[#612BD3] border-t-transparent rounded-full animate-spin" />
+          <div className="w-[48px] h-[48px] border-[3px] border-[#0EA5E9] border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { internalFetch } from '@gitroom/helpers/utils/internal.fetch';
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
-import { isGeneralServerSide } from '@gitroom/helpers/utils/is.general.server.side';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CommentsComponents } from '@gitroom/frontend/components/preview/comments.components';
@@ -22,7 +21,7 @@ const RenderPreviewDate = dynamicLoad(
 
 dayjs.extend(utc);
 export const metadata: Metadata = {
-  title: `${isGeneralServerSide() ? 'Postiz' : 'Gitroom'} Preview`,
+  title: 'SocialHub Preview',
   description: '',
 };
 export default async function Auth({
@@ -58,13 +57,14 @@ export default async function Auth({
                 >
                   <div className="max-w-[55px]">
                     <Image
-                      src={'/postiz.svg'}
+                      src={'/logo.svg'}
                       width={55}
                       height={55}
                       alt="Logo"
                     />
                   </div>
-                  <div>
+                  <span className="text-[24px] font-bold text-textColor">SocialHub</span>
+                  <div className="hidden" data-removed="true">
                     <svg
                       width="80"
                       height="75"

@@ -18,7 +18,6 @@ import { FacebookComponent } from '@gitroom/frontend/components/layout/facebook.
 import { headers } from 'next/headers';
 import { headerName } from '@gitroom/react/translation/i18n.config';
 import { HtmlComponent } from '@gitroom/frontend/components/layout/html.component';
-import Script from 'next/script';
 // import dynamicLoad from 'next/dynamic';
 // const SetTimezone = dynamicLoad(
 //   () => import('@gitroom/frontend/components/layout/set.timezone'),
@@ -42,14 +41,6 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     <html>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        {!!process.env.DATAFAST_WEBSITE_ID && (
-          <Script
-            data-website-id={process.env.DATAFAST_WEBSITE_ID}
-            data-domain="postiz.com"
-            src="https://datafa.st/js/script.js"
-            strategy="afterInteractive"
-          />
-        )}
       </head>
       <body
         className={clsx(jakartaSans.className, 'dark text-primary !bg-primary')}
@@ -95,7 +86,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             <DubAnalytics />
             <FacebookComponent />
             <Plausible
-              domain={!!process.env.IS_GENERAL ? 'postiz.com' : 'gitroom.com'}
+              domain=""
             >
               <PHProvider
                 phkey={process.env.NEXT_PUBLIC_POSTHOG_KEY}
