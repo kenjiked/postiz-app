@@ -536,6 +536,11 @@ export class TiktokProvider extends SocialAbstract implements SocialProvider {
     integration: Integration
   ): Promise<PostResponse[]> {
     const [firstPost] = postDetails;
+
+    // Auto-process images for TikTok (min 720p)
+    const { processMediaForPlatform } = await import('./image-processing.util');
+    firstPost.media = await processMediaForPlatform(firstPost.media, 'tiktok');
+
     const isPhoto = (firstPost?.media?.[0]?.path?.indexOf('mp4') || -1) === -1;
 
     console.log({

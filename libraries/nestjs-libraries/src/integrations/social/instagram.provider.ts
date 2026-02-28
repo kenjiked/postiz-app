@@ -471,8 +471,13 @@ export class InstagramProvider
     console.log('in progress', id);
     const isStory = firstPost.settings.post_type === 'story';
     const isTrialReel = !!firstPost.settings.is_trial_reel;
+
+    // Auto-crop images to Instagram aspect ratio requirements
+    const { processMediaForPlatform } = await import('./image-processing.util');
+    const processedMedia = await processMediaForPlatform(firstPost.media, 'instagram');
+
     const medias = await Promise.all(
-      firstPost?.media?.map(async (m) => {
+      processedMedia?.map(async (m) => {
         const caption =
           firstPost.media?.length === 1
             ? `&caption=${encodeURIComponent(firstPost.message)}`

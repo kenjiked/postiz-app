@@ -312,6 +312,15 @@ export class ThreadsProvider extends SocialAbstract implements SocialProvider {
     replyToId?: string,
     quoteId?: string
   ): Promise<string> {
+    // Auto-crop images to Threads aspect ratio requirements
+    if (postDetails.media && postDetails.media.length > 0) {
+      const { processMediaForPlatform } = await import('./image-processing.util');
+      postDetails = {
+        ...postDetails,
+        media: await processMediaForPlatform(postDetails.media, 'threads'),
+      };
+    }
+
     // Handle content creation based on media type
     if (!postDetails.media || postDetails.media.length === 0) {
       // Text-only content

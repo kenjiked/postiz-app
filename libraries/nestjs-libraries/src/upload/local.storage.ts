@@ -71,6 +71,23 @@ export class LocalStorage implements IUploadProvider {
     }
   }
 
+  async uploadBuffer(buffer: Buffer, filename: string, contentType: string): Promise<string> {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+
+    const innerPath = `/${year}/${month}/${day}`;
+    const dir = `${this.uploadDirectory}${innerPath}`;
+    mkdirSync(dir, { recursive: true });
+
+    const filePath = `${dir}/${filename}`;
+    const publicPath = `${innerPath}/${filename}`;
+    writeFileSync(filePath, buffer);
+
+    return process.env.FRONTEND_URL + '/uploads' + publicPath;
+  }
+
   async removeFile(filePath: string): Promise<void> {
     // Logic to remove the file from the filesystem goes here
     return new Promise((resolve, reject) => {

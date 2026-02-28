@@ -303,6 +303,10 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
   ): Promise<PostResponse[]> {
     const [firstPost] = postDetails;
 
+    // Auto-process images for Facebook (max 4MB)
+    const { processMediaForPlatform } = await import('./image-processing.util');
+    firstPost.media = await processMediaForPlatform(firstPost.media, 'facebook');
+
     let finalId = '';
     let finalUrl = '';
     if ((firstPost?.media?.[0]?.path?.indexOf('mp4') || -2) > -1) {

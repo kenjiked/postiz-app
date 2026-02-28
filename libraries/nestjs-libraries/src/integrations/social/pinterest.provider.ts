@@ -180,6 +180,15 @@ export class PinterestProvider
     accessToken: string,
     postDetails: PostDetails<PinterestSettingsDto>[]
   ): Promise<PostResponse[]> {
+    // Auto-crop images to Pinterest aspect ratio requirements
+    const { processMediaForPlatform } = await import('./image-processing.util');
+    if (postDetails?.[0]?.media) {
+      postDetails[0] = {
+        ...postDetails[0],
+        media: await processMediaForPlatform(postDetails[0].media, 'pinterest'),
+      };
+    }
+
     let mediaId = '';
     const findMp4 = postDetails?.[0]?.media?.find(
       (p) => (p.path?.indexOf('mp4') || -1) > -1
